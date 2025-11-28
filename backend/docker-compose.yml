@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vambe-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      # Volumen para persistir la base de datos SQLite
+      - ./data:/app/data
+      # Volumen para el CSV (por si necesitas reimportar)
+      - ./vambe_clients.csv:/app/vambe_clients.csv:ro
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+    restart: unless-stopped
+
