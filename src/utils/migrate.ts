@@ -3,7 +3,8 @@ import path from 'path';
 import { parse } from 'csv-parse/sync';
 import { initDatabase, getDatabase, closeDatabase } from './database';
 
-const CSV_PATH = path.join(__dirname, '../../vambe_clients.csv');
+// Resolve CSV path relative to project root (works in both dev and production)
+const CSV_PATH = path.join(process.cwd(), 'vambe_clients.csv');
 
 async function loadDataFromCSV() {
     try {
