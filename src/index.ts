@@ -11,7 +11,27 @@ initDatabase();
 
 const app = new Koa();
 
-app.use(cors());
+const allowedOrigins = [
+  'https://caso-vambe-back-production.up.railway.app'
+];
+
+app.use(cors({
+  origin: (ctx) => {
+    const origin = ctx.request.header.origin;
+    if (!origin) return '';
+    
+    if (origin.startsWith('http://localhost:') || origin === 'http://localhost') {
+      return origin;
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      return origin;
+    }
+    
+    return '';
+  },
+  credentials: true
+}));
 app.use(bodyParser());
 
 app.use(router.routes());
