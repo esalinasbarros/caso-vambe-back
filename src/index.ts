@@ -12,7 +12,7 @@ initDatabase();
 const app = new Koa();
 
 const allowedOrigins = [
-  'https://caso-vambe-esb.netlify.app/'
+  'https://caso-vambe-esb.netlify.app'
 ];
 
 app.use(cors({
