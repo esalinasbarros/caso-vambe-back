@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import { z } from 'zod';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { ClientCategories } from '../types';
-import { discoveryChannelEnum, urgencyEnum, painPointEnum, volumeRangeEnum, solutionPartEnum, usefulAddonEnum } from '../utils/enums';
+import { discoveryChannelEnum, urgencyEnum, painPointEnum, volumeRangeEnum, solutionPartEnum, usefulAddonEnum, industryEnum, integrationNeedsEnum } from '../utils/enums';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,7 +12,7 @@ const openai = new OpenAI({
 });
 
 const ClientCategorySchema = z.object({
-    industry: z.string(),
+    industry: industryEnum,
     nicheIndustry: z.string(),
     companySize: z.string(),
     painPoint: painPointEnum,
@@ -22,7 +22,7 @@ const ClientCategorySchema = z.object({
     urgency: urgencyEnum,
     budgetIndicator: z.string(),
     estimatedVolume: z.number(),
-    integrationNeeds: z.string(),
+    integrationNeeds: integrationNeedsEnum,
     byVolume: volumeRangeEnum,
     solutionPart: solutionPartEnum,
     usefulAddons: z.array(usefulAddonEnum),
@@ -31,7 +31,7 @@ const ClientCategorySchema = z.object({
 const systemPrompt = `
 Eres un experto analista de ventas.
 Analiza la información del cliente y devuelve SIEMPRE todos los campos del esquema:
-- industry (categoría general. Que la categoria sea Ecommerce y Retail para tiendas que caigan en esta categoria)
+- industry (categoría general. Que la categoria sea Ecommerce y Retail para tiendas que caigan en esta categoria.)
 - nicheIndustry (nicho o subindustria)
 - companySize
 - painPoint (problema principal)

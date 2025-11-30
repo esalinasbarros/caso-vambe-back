@@ -52,3 +52,40 @@ export const usefulAddonEnum = z.enum([
   "Formulas Matematicas con IA"
 ]);
 
+export const industryEnum = z.enum([
+  "Ecommerce y Retail",
+  "Tecnología y Software",
+  "Servicios Financieros",
+  "Salud y Bienestar",
+  "Educación",
+  "Inmobiliaria",
+  "Hospitalidad y Turismo",
+  "Marketing y Publicidad",
+  "Consultoría",
+  "Servicios Profesionales",
+  "Otro"
+]);
+
+export type Industry = z.infer<typeof industryEnum>;
+
+export const integrationNeedsEnum = z.enum([
+  "N/A",
+  "API",
+  "CRM",
+  "ERP",
+  "SDK",
+  "API, CRM",
+  "API, ERP",
+  "API, SDK",
+  "CRM, ERP",
+  "CRM, SDK",
+  "ERP, SDK",
+  "API, CRM, ERP",
+  "API, CRM, SDK",
+  "API, ERP, SDK",
+  "CRM, ERP, SDK",
+  "API, CRM, ERP, SDK"
+]);
+
+export type IntegrationNeeds = z.infer<typeof integrationNeedsEnum>;
+
