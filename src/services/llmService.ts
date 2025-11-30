@@ -65,7 +65,7 @@ export const llmClientCategorization = async (prompt: string): Promise<ClientCat
 };
 
 const IndustrySchema = z.object({
-    industry: z.string(),
+    industry: industryEnum,
 });
 
 const industrySystemPrompt = `
@@ -73,6 +73,19 @@ Eres un experto analista de ventas.
 Analiza la descripción del cliente y determina su industria principal.
 Responde solo con la industria en español, con la primera letra en mayúscula.
 (categoría general. Que la categoria sea Ecommerce y Retail para tiendas que caigan en esta categoria)
+
+Opciones disponibles:
+- Ecommerce y Retail
+- Tecnología y Software
+- Servicios Financieros
+- Salud y Bienestar
+- Educación
+- Inmobiliaria
+- Hospitalidad y Turismo
+- Marketing y Publicidad
+- Consultoría
+- Servicios Profesionales
+- Otro
 `.trim();
 
 export const llmGetIndustry = async (prompt: string): Promise<string> => {
