@@ -4,7 +4,7 @@ Backend con SQLite como base de datos liviana.
 
 ## Requisitos
 
-- Node.js 20+
+- Node.js 22+
 - npm
 
 ## Instalación
@@ -44,42 +44,6 @@ npm run dev
 ```bash
 npm run build
 npm start
-```
-
-## Docker
-
-### Construir la imagen
-
-```bash
-docker build -t vambe-backend .
-```
-
-### Ejecutar con Docker Compose
-
-```bash
-docker-compose up -d
-```
-
-Esto iniciará el contenedor y:
-- Creará automáticamente la base de datos SQLite si no existe
-- Persistirá la base de datos en el directorio `./data`
-
-**Importante:** Después de iniciar el contenedor, debes ejecutar manualmente la carga de datos:
-
-```bash
-docker-compose exec backend npm run load-data
-```
-
-### Ver logs
-
-```bash
-docker-compose logs -f
-```
-
-### Detener
-
-```bash
-docker-compose down
 ```
 
 ## Estructura de la Base de Datos

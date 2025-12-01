@@ -117,12 +117,22 @@ export const buildSolutionPartMetrics = (clients: CategorizedClient[]) => {
     const solutionPartMap = new Map<string, GroupedCounts>();
 
     clients.forEach((client) => {
-        const solutionPart = client.categories.solutionPart || 'N/A';
-        const current = solutionPartMap.get(solutionPart) || { total: 0, closed: 0 };
-        solutionPartMap.set(solutionPart, {
-            total: current.total + 1,
-            closed: current.closed + (client.closed === 1 ? 1 : 0),
-        });
+        const solutionParts = client.categories.solutionPart || [];
+        if (solutionParts.length === 0) {
+            const current = solutionPartMap.get('N/A') || { total: 0, closed: 0 };
+            solutionPartMap.set('N/A', {
+                total: current.total + 1,
+                closed: current.closed + (client.closed === 1 ? 1 : 0),
+            });
+        } else {
+            solutionParts.forEach((solutionPart) => {
+                const current = solutionPartMap.get(solutionPart) || { total: 0, closed: 0 };
+                solutionPartMap.set(solutionPart, {
+                    total: current.total + 1,
+                    closed: current.closed + (client.closed === 1 ? 1 : 0),
+                });
+            });
+        }
     });
 
     const solutionPartOrder = ['Vambe AI', 'Vambe Ads', 'Vambe Connect', 'N/A'];

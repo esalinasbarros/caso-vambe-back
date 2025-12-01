@@ -25,7 +25,7 @@ export interface ClientCategories {
     estimatedVolume: number;       // Volumen estimado de clientes
     integrationNeeds: string;      // Necesidades de integración (ej. API, SDK, etc.)
     byVolume: string;
-    solutionPart: string;
+    solutionPart: string[];
     usefulAddons: string[];
 }
 

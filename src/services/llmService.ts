@@ -24,7 +24,7 @@ const ClientCategorySchema = z.object({
     estimatedVolume: z.number(),
     integrationNeeds: integrationNeedsEnum,
     byVolume: volumeRangeEnum,
-    solutionPart: solutionPartEnum,
+    solutionPart: z.array(solutionPartEnum),
     usefulAddons: z.array(usefulAddonEnum),
 });
 
@@ -43,7 +43,7 @@ Analiza la información del cliente y devuelve SIEMPRE todos los campos del esqu
 - estimatedVolume
 - integrationNeeds (CRM, ERP, API, SDK; si no aplica usa "N/A". Si es API y CRM pon API, CRM, si es API y ERP pon API, ERP, si es API y SDK pon API, SDK, si es CRM y ERP pon CRM, ERP, si es CRM y SDK pon CRM, SDK, si es ERP y SDK pon ERP, SDK, si es API, CRM y ERP pon API, CRM, ERP, si es API, CRM y SDK pon API, CRM, SDK, si es API, ERP y SDK pon API, ERP, SDK, si es CRM, ERP y SDK pon CRM, ERP, SDK, si es API, CRM, ERP y SDK pon API, CRM, ERP, SDK)
 - byVolume ("0-50", "51-100", "101-200", "201-500", "500+")
-- solutionPart (Vambe AI: para hablar con clientes, generar leads y otros; Vambe Ads: publicidad; Vambe Connect: integraciones)
+- solutionPart (array de soluciones. Puede ser una combinación de: Vambe AI: para hablar con clientes, generar leads y otros; Vambe Ads: publicidad; Vambe Connect: integraciones. Puede ser un array vacío si no aplica ninguna solución)
 - usefulAddons (array de addons que se probablemente le sirven mucho al cliente. Opciones: "Llamadas en vambe", "Comentarios en instagram", "Generador de PDF con IA", "Gmail: Envio de correaos con IA", "Razones de perdida en tickets", "NPS con IA", "Formulas Matematicas con IA". Puede ser un array vacío si no se vendió ningún addon)
 
 Formato:

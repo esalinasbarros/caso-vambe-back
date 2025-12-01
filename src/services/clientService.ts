@@ -24,6 +24,18 @@ function getCachedCategories(clientId: number): ClientCategories | null {
         }
     }
     
+    let solutionPart: string[] = [];
+    if (row.solution_part) {
+        try {
+            solutionPart = JSON.parse(row.solution_part);
+        } catch (e) {
+            // Si no es JSON válido, intentar como string simple (compatibilidad hacia atrás)
+            if (typeof row.solution_part === 'string' && row.solution_part.trim() !== '') {
+                solutionPart = [row.solution_part];
+            }
+        }
+    }
+    
     return {
         industry: row.industry || '',
         nicheIndustry: row.nicheIndustry || '',
@@ -37,7 +49,7 @@ function getCachedCategories(clientId: number): ClientCategories | null {
         estimatedVolume: row.estimatedVolume || 0,
         integrationNeeds: row.integrationNeeds || '',
         byVolume: row.byVolume || '',
-        solutionPart: row.solution_part || '',
+        solutionPart: solutionPart,
         usefulAddons: usefulAddons,
     };
 }
@@ -64,7 +76,7 @@ function saveCachedCategories(clientId: number, categories: ClientCategories): v
         categories.estimatedVolume,
         categories.integrationNeeds,
         categories.byVolume,
-        categories.solutionPart,
+        JSON.stringify(categories.solutionPart || []),
         JSON.stringify(categories.usefulAddons || [])
     );
 }
@@ -138,7 +150,7 @@ export async function getCategorizedClients(forceRefresh: boolean = false): Prom
                         estimatedVolume: 0,
                         integrationNeeds: 'Error',
                         byVolume: 'Error',
-                        solutionPart: 'Error',
+                        solutionPart: [],
                         usefulAddons: [],
                     };
                     

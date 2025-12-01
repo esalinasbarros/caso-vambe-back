@@ -21,7 +21,7 @@
 - Explicar un nuevo cliente y asignar un vendedor segun ventas historicas que ha cerrado. Puede incluir diferentes metricas como industria, etc.
 - Metricas de industrias donde mas se vende y canales donde mas se vende. Con esto es facil analizar que areas estan debiles
 - Metrica de integraciones que quizas va a requerir el cliente. Muy buena seria ver las integraciones que requiere solo los clientes que no se cerraron, para ver si ese fue un factor (idea)
-- Normalizar graficos. Si tenemos 100% en la industra de restaurantes y tenemos 1 cliente, no nos dice nada util. Hbilitar la opcion de ambos graficos.
+- Incluir metricas por vendedor por industria, volumen de clientes, tamaño del cliente y problema principal de este mismo.
 
 
 
@@ -33,3 +33,4 @@
 
 - Filtramos a los clientes con todos los datos cargados en el front. Muy poco optimo, la idea es que el backend haga los filtros porque eso nos permitiria paginar los datos porque estos pueden ser muchos (filtrados o no filtrados).
 - Agregar un linter para front y para backend si se quiere mantener codigo limpio. Lo forzariamos con pipeline o pre-commit.
+- Se esta cargando todo a memoria, lo que es muy poco optimo para un dashboard
