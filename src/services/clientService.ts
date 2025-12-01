@@ -29,7 +29,6 @@ function getCachedCategories(clientId: number): ClientCategories | null {
         try {
             solutionPart = JSON.parse(row.solution_part);
         } catch (e) {
-            // Si no es JSON válido, intentar como string simple (compatibilidad hacia atrás)
             if (typeof row.solution_part === 'string' && row.solution_part.trim() !== '') {
                 solutionPart = [row.solution_part];
             }
@@ -81,18 +80,30 @@ function saveCachedCategories(clientId: number, categories: ClientCategories): v
     );
 }
 
-export async function getCategorizedClients(forceRefresh: boolean = false): Promise<CategorizedClient[]> {
-    const clients = loadClientsFromDatabase();
+export async function getCategorizedClients(forceRefresh: boolean = false, month?: string | null): Promise<CategorizedClient[]> {
+    const clients = loadClientsFromDatabase(month);
     const database = getDatabase();
     
     const categorizedClients: CategorizedClient[] = [];
     const clientsToProcess: { client: Client; clientId: number }[] = [];
     
-    const allClientsWithIds = database.prepare(`
+    let query = `
         SELECT id, nombre, correo, telefono, fecha, vendedor, closed, transcripcion
         FROM clients
-        ORDER BY id
-    `).all() as any[];
+        WHERE nombre IS NOT NULL AND nombre != ''
+        AND transcripcion IS NOT NULL AND transcripcion != ''
+    `;
+    
+    const params: any[] = [];
+    
+    if (month) {
+        query += ` AND strftime('%Y-%m', fecha) = ?`;
+        params.push(month);
+    }
+    
+    query += ` ORDER BY id`;
+    
+    const allClientsWithIds = database.prepare(query).all(...params) as any[];
     
     for (const dbClient of allClientsWithIds) {
         const client: Client = {

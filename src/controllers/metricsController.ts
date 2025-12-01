@@ -3,7 +3,8 @@ import * as metricsService from '../services/metricsService';
 
 export const getMetrics = async (ctx: Context) => {
     try {
-        const metrics = await metricsService.getMetrics();
+        const month = ctx.query.month as string | undefined;
+        const metrics = await metricsService.getMetrics(month || null);
         ctx.body = {
             success: true,
             data: metrics
@@ -19,7 +20,8 @@ export const getMetrics = async (ctx: Context) => {
 
 export const getBasicMetrics = async (ctx: Context) => {
     try {
-        const metrics = await metricsService.getBasicMetrics();
+        const month = ctx.query.month as string | undefined;
+        const metrics = await metricsService.getBasicMetrics(month || null);
         ctx.body = {
             success: true,
             data: metrics
@@ -36,7 +38,8 @@ export const getBasicMetrics = async (ctx: Context) => {
 export const getAdvancedMetrics = async (ctx: Context) => {
     try {
         const forceRefresh = ctx.query.forceRefresh === 'true';
-        const result = await metricsService.getAdvancedMetrics(forceRefresh);
+        const month = ctx.query.month as string | undefined;
+        const result = await metricsService.getAdvancedMetrics(forceRefresh, month || null);
         ctx.body = {
             success: true,
             data: {

@@ -3,17 +3,27 @@ import { getDatabase, initDatabase } from './database';
 
 initDatabase();
 
-export function loadClientsFromDatabase(): Client[] {
+export function loadClientsFromDatabase(month?: string | null): Client[] {
     try {
         const database = getDatabase();
         
-        const rows = database.prepare(`
+        let query = `
             SELECT nombre, correo, telefono, fecha, vendedor, closed, transcripcion
             FROM clients
             WHERE nombre IS NOT NULL AND nombre != '' 
             AND transcripcion IS NOT NULL AND transcripcion != ''
-            ORDER BY id
-        `).all() as any[];
+        `;
+        
+        const params: any[] = [];
+        
+        if (month) {
+            query += ` AND strftime('%Y-%m', fecha) = ?`;
+            params.push(month);
+        }
+        
+        query += ` ORDER BY id`;
+        
+        const rows = database.prepare(query).all(...params) as any[];
 
         const clients: Client[] = rows.map((row) => ({
             nombre: row.nombre || '',

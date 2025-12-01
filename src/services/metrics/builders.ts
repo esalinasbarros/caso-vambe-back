@@ -32,11 +32,17 @@ export const buildTimeSeries = (clients: Client[]) => {
     });
 
     return Array.from(monthMap.entries())
-        .map(([month, data]) => ({
-            month,
-            totalClients: data.total,
-            closedDeals: data.closed,
-        }))
+        .map(([month, data]) => {
+            const notClosed = data.total - data.closed;
+            const conversionRate = calculateConversion(data.closed, data.total);
+            return {
+                month,
+                totalClients: data.total,
+                closedDeals: data.closed,
+                notClosedDeals: notClosed,
+                conversionRate: parseFloat(conversionRate.toFixed(2)),
+            };
+        })
         .sort((a, b) => a.month.localeCompare(b.month));
 };
 

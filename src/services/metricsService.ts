@@ -5,8 +5,8 @@ import { buildOverview, buildTimeSeries } from './metrics/builders';
 import { buildVendorMetrics, buildVendorIndustryMetrics, buildVendorPainPointMetrics, buildVendorVolumeMetrics } from './metrics/vendorMetrics';
 import { buildIndustryMetrics, buildDiscoveryChannelMetrics, buildPainPointMetrics, buildIntegrationNeedsMetrics, buildVolumeMetrics, buildSolutionPartMetrics, buildUsefulAddonsMetrics } from './metrics/categoryMetrics';
 
-export async function getBasicMetrics(): Promise<Partial<Metrics>> {
-    const clients = loadClientsFromDatabase();
+export async function getBasicMetrics(month?: string | null): Promise<Partial<Metrics>> {
+    const clients = loadClientsFromDatabase(month);
     return {
         overview: buildOverview(clients),
         byVendor: buildVendorMetrics(clients),
@@ -14,8 +14,8 @@ export async function getBasicMetrics(): Promise<Partial<Metrics>> {
     };
 }
 
-export async function getAdvancedMetrics(forceRefresh: boolean = false): Promise<{ metrics: Partial<Metrics>; categorizedClients: CategorizedClient[] }> {
-    const categorizedClients = await getCategorizedClients(forceRefresh);
+export async function getAdvancedMetrics(forceRefresh: boolean = false, month?: string | null): Promise<{ metrics: Partial<Metrics>; categorizedClients: CategorizedClient[] }> {
+    const categorizedClients = await getCategorizedClients(forceRefresh, month);
     return {
         metrics: {
             byIndustry: buildIndustryMetrics(categorizedClients),
@@ -33,9 +33,9 @@ export async function getAdvancedMetrics(forceRefresh: boolean = false): Promise
     };
 }
 
-export async function getMetrics(): Promise<Metrics> {
-    const basicMetrics = await getBasicMetrics();
-    const { metrics: advancedMetrics } = await getAdvancedMetrics();
+export async function getMetrics(month?: string | null): Promise<Metrics> {
+    const basicMetrics = await getBasicMetrics(month);
+    const { metrics: advancedMetrics } = await getAdvancedMetrics(false, month);
     return {
         ...basicMetrics,
         ...advancedMetrics,
